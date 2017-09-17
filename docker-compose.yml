@@ -1,0 +1,18 @@
+version: '3'
+services:
+  mysql_1:
+    image: mysql
+    env_file: .env
+    ports:
+      - 3306:3306
+    volumes:
+      - ./var/lib/mysql1:/var/lib/mysql
+      - ./etc/mysql/mysql.conf.d:/etc/mysql/mysql.conf.d
+  mysql_2:
+    image: mysql
+    env_file: .env
+    ports:
+      - "3307:3306"
+    volumes:
+      - ./var/lib/mysql2:/var/lib/mysql
+      - ./etc/mysql/mysql2.conf.d/:/etc/mysql/mysql.conf.d
