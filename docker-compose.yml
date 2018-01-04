@@ -1,24 +1,30 @@
 version: '3.5'
 services:
 
-  mysql_1:
+  mysql_master:
     image: mysql:8.0.3
     env_file: .env
     ports:
       - 3307:3306
     volumes:
-      - mysql-1-data:/var/lib/mysql
-      - ./etc/mysql/conf.d:/etc/mysql/conf.d:ro
+      - mysql-master-data:/var/lib/mysql
+      - ./docker-entrypoint-initdb.d/master.sh:/docker-entrypoint-initdb.d/1-master-init.sh
+    command:
+      - --log-bin=mysql-bin
+      - --server-id=1
 
-  mysql_2:
+  mysql_node:
     image: mysql:8.0.3
     env_file: .env
     ports:
       - "3308:3306"
     volumes:
-      - mysql-2-data:/var/lib/mysql
-      - ./etc/mysql2/conf.d/:/etc/mysql/conf.d:ro
+      - mysql-node-data:/var/lib/mysql
+      - ./docker-entrypoint-initdb.d/node.sh:/docker-entrypoint-initdb.d/1-node-init.sh
+    command:
+      - --server-id=10
+      - --character-set-server=utf8mb4
 
 volumes:
-  mysql-1-data:
-  mysql-2-data:
+  mysql-master-data:
+  mysql-node-data:
