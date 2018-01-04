@@ -1,10 +1,10 @@
 #!/bin/bash
 
+set -e
+
 mysql_net=$(ip route | awk '$1=="default" {print $3}' | sed "s/\.[0-9]\+$/.%/g")
 
 # check mysql master run status
-
-set -e
 
 until mysql -u root -h mysql_master -pmytest; do
   >&2 echo "MySQL master is unavailable - sleeping"
